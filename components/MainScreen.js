@@ -23,7 +23,9 @@ export default function MainScreen() {
   };
 
   const handleAddTextHolder = () => {
-    setBlocks((prevInputs) => [createNewTextHolder(), ...prevInputs]);
+    const newBlock = createNewTextHolder();
+    setBlocks((prevInputs) => [newBlock, ...prevInputs]);
+    setSelectedBlockId(newBlock.id);
   };
 
   const handleDeleteTextHolder = (idToDelete) => {

@@ -8,7 +8,8 @@ const MAX_LENGTH = 30;
 
 export default function Header({ id, onDelete, isSelected }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [text, setText] = useState("");
+  const [text, setText] = useState("PlaceHolder");
+  const headerRef = useRef(null);
 
   const handleEditPress = () => {
     setIsEditing(!isEditing);
@@ -20,8 +21,15 @@ export default function Header({ id, onDelete, isSelected }) {
     }
   }, [isSelected]);
 
+  setTimeout(() => {
+    if (isEditing && headerRef.current) {
+      headerRef.current.focus();
+    }
+  }, 50);
+
   const HeaderInput = isEditing ? (
     <TextInput
+      ref={headerRef}
       style={[styles.headerInput, styles.editableHeaderInput]}
       placeholder={"Enter Name..."}
       value={text}
