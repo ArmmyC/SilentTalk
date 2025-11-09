@@ -102,9 +102,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   headerInput: {
-    flex: 1,
     fontFamily: Fonts.sans,
-    fontSize: 14,
+    fontSize: Sizes.textSize.header,
+    flex: 1,
     fontWeight: "600",
     paddingVertical: 10,
   },

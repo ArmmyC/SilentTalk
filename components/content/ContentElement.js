@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   contentInput: {
     color: Colors.textHolder.contentText,
     fontFamily: Fonts.sans,
-    fontSize: 20,
+    fontSize: Sizes.textSize.content,
     minHeight: 150,
     textAlignVertical: "top",
     paddingVertical: 10,
