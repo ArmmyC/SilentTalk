@@ -1,14 +1,22 @@
 import { StyleSheet, Pressable as PressableRN } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
-
-import { useState } from "react";
 import TTSButton from "./TTSButton.js";
 import AddButton from "./AddButton.js";
 
-export default function Footer({ onAddBlock, isSelecting }) {
+export default function Footer({
+  onAddBlock,
+  isSelecting,
+  ttsText,
+  isAnyBlockEditing,
+  setStopTTS,
+}) {
   const ButtonElement = isSelecting ? (
-    <TTSButton />
+    <TTSButton
+      ttsText={ttsText}
+      isAnyBlockEditing={isAnyBlockEditing}
+      setStopTTS={setStopTTS}
+    />
   ) : (
     <AddButton onAddBlock={onAddBlock} />
   );

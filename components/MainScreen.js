@@ -1,18 +1,30 @@
 import { View, StyleSheet } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import TextHolder from "./content/TextHolder.js";
+import TextHolder from "./content/_TextHolder.js";
 import Footer from "./footer/_Footer.js";
 import { Colors } from "../constants/settings.js";
+import * as Speech from "expo-speech";
 
 const createNewTextHolder = () => ({
   id: Date.now().toString(),
+  contentText: "",
 });
 
 export default function MainScreen() {
   const [blocks, setBlocks] = useState([createNewTextHolder()]);
   const [selectedBlockId, setSelectedBlockId] = useState(null);
+  const [editingBlockId, setEditingBlockId] = useState(null);
+  const [stopTTSHandler, setStopTTSHandler] = useState(() => {});
+
+  const isAnyBlockEditing = editingBlockId !== null;
+  const selectedBlock = blocks.find((block) => block.id === selectedBlockId);
+  const ttsText = selectedBlock ? selectedBlock.contentText : "";
+
+  const handleSetEditingId = (id) => {
+    setEditingBlockId(id);
+  };
 
   const handleSelectBlock = (id) => {
     if (selectedBlockId !== id) {
@@ -35,6 +47,14 @@ export default function MainScreen() {
     setSelectedBlockId(null);
   };
 
+  const handleChangeContent = (idToChange, newText) => {
+    setBlocks((prevBlocks) =>
+      prevBlocks.map((block) =>
+        block.id === idToChange ? { ...block, contentText: newText } : block
+      )
+    );
+  };
+
   return (
     <SafeAreaView style={styles.root} edges={["top", "left", "right"]}>
       <KeyboardAwareScrollView style={styles.content} bottomOffset={200}>
@@ -46,6 +66,11 @@ export default function MainScreen() {
               onDelete={handleDeleteTextHolder}
               isSelected={block.id === selectedBlockId}
               onSelect={handleSelectBlock}
+              contentText={block.contentText}
+              onChangeContent={handleChangeContent}
+              isEditing={block.id === editingBlockId}
+              onSetEditingId={handleSetEditingId}
+              stopTTS={stopTTSHandler}
             />
           ))}
         </View>
@@ -53,6 +78,9 @@ export default function MainScreen() {
       <Footer
         onAddBlock={handleAddTextHolder}
         isSelecting={selectedBlockId !== null}
+        ttsText={ttsText}
+        isAnyBlockEditing={isAnyBlockEditing}
+        setStopTTS={setStopTTSHandler}
       />
     </SafeAreaView>
   );

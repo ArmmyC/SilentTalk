@@ -3,23 +3,32 @@ import { View, TextInput, StyleSheet, Text } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors, Sizes, Fonts } from "../../constants/settings.js";
+import * as Speech from "expo-speech";
 
 const MAX_LENGTH = 30;
 
-export default function Header({ id, onDelete, isSelected }) {
-  const [isEditing, setIsEditing] = useState(false);
+export default function Header({
+  id,
+  onDelete,
+  isSelected,
+  isEditing,
+  onSetEditingId,
+  stopTTS,
+}) {
   const [text, setText] = useState("PlaceHolder");
   const headerRef = useRef(null);
 
   const handleEditPress = () => {
-    setIsEditing(!isEditing);
+    const nextEditingState = !isEditing;
+    onSetEditingId(nextEditingState ? id : null);
+    stopTTS();
   };
 
   useEffect(() => {
-    if (isSelected === false) {
-      setIsEditing(false);
+    if (isSelected === false && isEditing === true) {
+      onSetEditingId(null);
     }
-  }, [isSelected]);
+  }, [isSelected, isEditing, onSetEditingId]);
 
   setTimeout(() => {
     if (isEditing && headerRef.current) {

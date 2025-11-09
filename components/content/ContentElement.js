@@ -1,15 +1,12 @@
 import { View, TextInput, StyleSheet } from "react-native";
 import { Colors, Sizes, Fonts } from "../../constants/settings.js";
-import { useState } from "react";
 
-export default function Content({ isSelected }) {
-  const [text, setText] = useState("");
-
+export default function Content({ id, isSelected, text, setText, stopTTS }) {
   const contentInput = isSelected && (
     <TextInput
       style={styles.contentInput}
       placeholder={"Enter Text..."}
-      onChangeText={setText}
+      onChangeText={(text) => setText(id, text)}
       value={text}
       multiline={true}
       textAlignVertical="top"

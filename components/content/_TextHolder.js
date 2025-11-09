@@ -1,11 +1,20 @@
-import { useState, useRef, useEffect } from "react";
-import { View, TextInput, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import { Colors } from "../../constants/settings.js";
 import Header from "./HeaderElement.js";
 import Content from "./ContentElement.js";
 
-export default function TextHolder({ id, onDelete, isSelected, onSelect }) {
+export default function TextHolder({
+  id,
+  onDelete,
+  isSelected,
+  onSelect,
+  contentText,
+  onChangeContent,
+  isEditing,
+  onSetEditingId,
+  stopTTS,
+}) {
   return (
     <View style={[styles.container, isSelected && styles.containerFocused]}>
       <Pressable
@@ -13,8 +22,21 @@ export default function TextHolder({ id, onDelete, isSelected, onSelect }) {
           onSelect(id);
         }}
       >
-        <Header id={id} onDelete={onDelete} isSelected={isSelected} />
-        <Content isSelected={isSelected} />
+        <Header
+          id={id}
+          onDelete={onDelete}
+          isSelected={isSelected}
+          isEditing={isEditing}
+          onSetEditingId={onSetEditingId}
+          stopTTS={stopTTS}
+        />
+        <Content
+          id={id}
+          isSelected={isSelected}
+          text={contentText}
+          setText={onChangeContent}
+          stopTTS={stopTTS}
+        />
       </Pressable>
     </View>
   );

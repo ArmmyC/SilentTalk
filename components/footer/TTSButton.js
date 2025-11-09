@@ -2,19 +2,46 @@ import { View, StyleSheet } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import { Colors, Sizes } from "../../constants/settings.js";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as Speech from "expo-speech";
 
-export default function TTSButton() {
+export default function TTSButton({ ttsText, isAnyBlockEditing, setStopTTS }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const handlePlayPress = () => {
-    setIsPlaying(!isPlaying);
-    console.log({ isPlaying });
+  const stopSpeech = () => {
+    Speech.stop();
+    setIsPlaying(false);
+  };
+
+  useEffect(() => {
+    setStopTTS(stopSpeech);
+  }, [setStopTTS]);
+
+  useEffect(() => {
+    return () => {
+      Speech.stop();
+    };
+  }, []);
+
+  const handlePlayPress = async () => {
+    if (isPlaying) {
+      stopSpeech();
+    } else {
+      if (!ttsText) {
+        return;
+      }
+      setIsPlaying(true);
+      Speech.speak(ttsText, {
+        onDone: () => setIsPlaying(false),
+        onError: () => setIsPlaying(false),
+      });
+    }
   };
 
   return (
     <View style={styles.footer}>
       <Pressable
+        disabled={isAnyBlockEditing}
         onPress={() => {}}
         style={({ pressed }) => [
           styles.actionButton,
@@ -30,6 +57,7 @@ export default function TTSButton() {
         />
       </Pressable>
       <Pressable
+        disabled={isAnyBlockEditing}
         onPress={handlePlayPress}
         style={({ pressed }) => [
           styles.actionButton,
@@ -44,6 +72,7 @@ export default function TTSButton() {
         />
       </Pressable>
       <Pressable
+        disabled={isAnyBlockEditing}
         onPress={() => {}}
         style={({ pressed }) => [
           styles.actionButton,
