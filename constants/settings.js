@@ -52,4 +52,8 @@ export const Sizes = {
     sideIcon: 20,
     blockIcon: 16,
   },
+  textSize: {
+    content: 20,
+    header: 16,
+  },
 };
