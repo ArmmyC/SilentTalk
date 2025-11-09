@@ -3,8 +3,11 @@ import { Platform } from "react-native";
 export const Colors = {
   background: "#f0f2f3ff",
   button: {
-    addButton: "#78a5feff",
-    addButtonText: "#ffffffff",
+    background: "#72b8ffff",
+    addButton: "#ffffffff",
+    ttsButton: "#ffffffff",
+    forwardButton: "#ffffffff",
+    backwardButton: "#ffffffff",
   },
   textHolder: {
     headerBackgroud: "#008adaff",
@@ -34,3 +37,11 @@ export const Fonts = Platform.select({
     mono: "monospace",
   },
 });
+
+export const Sizes = {
+  iconSize: {
+    mainIcon: 36,
+    sideIcon: 20,
+    blockIcon: 20,
+  },
+};
