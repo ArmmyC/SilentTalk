@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 
 export default function TTSButton() {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handlePlayPress = () => {
     setIsPlaying(!isPlaying);
@@ -26,7 +26,7 @@ export default function TTSButton() {
         <MaterialCommunityIcons
           name={"step-backward"}
           size={Sizes.iconSize.sideIcon}
-          color={Colors.button.backwardButton}
+          color={Colors.FooterButton.backwardButton}
         />
       </Pressable>
       <Pressable
@@ -40,7 +40,7 @@ export default function TTSButton() {
         <MaterialCommunityIcons
           name={isPlaying ? "pause" : "volume-high"}
           size={Sizes.iconSize.mainIcon}
-          color={Colors.button.ttsButton}
+          color={Colors.FooterButton.ttsButton}
         />
       </Pressable>
       <Pressable
@@ -54,7 +54,7 @@ export default function TTSButton() {
         <MaterialCommunityIcons
           name={"step-forward"}
           size={Sizes.iconSize.sideIcon}
-          color={Colors.button.forwardButton}
+          color={Colors.FooterButton.forwardButton}
         />
       </Pressable>
     </View>
@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   actionButton: {
-    backgroundColor: Colors.button.background,
-    shadowColor: Colors.button.background,
+    backgroundColor: Colors.FooterButton.background,
+    shadowColor: Colors.FooterButton.background,
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",

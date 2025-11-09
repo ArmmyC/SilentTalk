@@ -6,9 +6,7 @@ import { useState } from "react";
 import TTSButton from "./TTSButton.js";
 import AddButton from "./AddButton.js";
 
-export default function Footer({ onAddBlock }) {
-  const [isSelecting, setIsSelecting] = useState(false);
-
+export default function Footer({ onAddBlock, isSelecting }) {
   const ButtonElement = isSelecting ? (
     <TTSButton />
   ) : (

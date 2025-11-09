@@ -4,61 +4,67 @@ import { Pressable } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors, Sizes, Fonts } from "../../constants/settings.js";
 
-export default function Header({
-  id,
-  headerText,
-  contentText,
-  onHeaderChange,
-  onContentChange,
-  onDelete,
-}) {
+const MAX_LENGTH = 30;
+
+export default function Header({ id, onDelete, isSelected }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState("");
+
+  const handleEditPress = () => {
+    setIsEditing(!isEditing);
+  };
+
+  useEffect(() => {
+    if (isSelected === false) {
+      setIsEditing(false);
+    }
+  }, [isSelected]);
+
   const HeaderInput = isEditing ? (
     <TextInput
-      ref={headerInputRef}
       style={[styles.headerInput, styles.editableHeaderInput]}
       placeholder={"Enter Name..."}
-      value={headerText}
-      onChangeText={(text) => onHeaderChange(id, text)}
-      onFocus={handleContentFocus}
-      onBlur={handleHeaderInputBlur}
+      value={text}
+      numberOfLines={1}
+      maxLength={MAX_LENGTH}
+      onChangeText={setText}
       placeholderTextColor={Colors.textHolder.headerText}
     />
   ) : (
-    <Pressable style={{ flex: 1 }} onPress={handleEditPress}>
-      <Text
-        style={[styles.headerInput, styles.staticHeaderText]}
-        numberOfLines={1}
-      >
-        {headerValue || "Enter Name..."}
-      </Text>
-    </Pressable>
+    <Text
+      style={[styles.headerInput, styles.staticHeaderText]}
+      numberOfLines={1}
+      maxLength={MAX_LENGTH}
+    >
+      {text || "PlaceHolder"}
+    </Text>
   );
 
-  return (
-    <View style={styles.header}>
-      {HeaderInput}
-
-      {/* Pencil/Edit Button */}
+  const HeaderButton = isSelected && (
+    <View style={styles.headerButton}>
       <Pressable
         onPress={handleEditPress}
         style={({ pressed }) => [
           styles.actionButton,
+          isEditing ? styles.checkButton : styles.pencilButton,
           pressed && { opacity: 0.75 },
         ]}
       >
         <MaterialCommunityIcons
           name={isEditing ? "check" : "pencil-outline"}
           size={Sizes.iconSize.blockIcon}
-          color={isEditing ? "#4CD964" : "#007AFF"}
+          color={
+            isEditing
+              ? Colors.HeaderButton.checkButton
+              : Colors.HeaderButton.pencilButton
+          }
         />
       </Pressable>
-
-      {/* Delete Button */}
       <Pressable
         onPress={() => onDelete(id)}
         style={({ pressed }) => [
           styles.actionButton,
+          styles.binButton,
           pressed && { opacity: 0.75 },
         ]}
         disabled={isEditing}
@@ -66,9 +72,52 @@ export default function Header({
         <MaterialCommunityIcons
           name="trash-can-outline"
           size={Sizes.iconSize.blockIcon}
-          color={isEditing ? "#D1D5DB" : "#FF3B30"}
+          color={isEditing ? "#D1D5DB" : Colors.HeaderButton.binButton}
         />
       </Pressable>
     </View>
   );
+
+  return (
+    <View style={styles.header}>
+      {HeaderInput}
+      {HeaderButton}
+    </View>
+  );
 }
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: Colors.textHolder.headerBackgroud,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+  },
+  headerInput: {
+    flex: 1,
+    fontFamily: Fonts.sans,
+    fontSize: 14,
+    fontWeight: "600",
+    paddingVertical: 10,
+  },
+  headerButton: {
+    flexDirection: "row",
+  },
+  staticHeaderText: {
+    color: Colors.textHolder.headerText,
+  },
+  editableHeaderInput: {
+    color: Colors.textHolder.headerText,
+  },
+  actionButton: {
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
+    width: Sizes.iconSize.blockIcon + 10,
+    height: Sizes.iconSize.blockIcon + 10,
+  },
+  binButton: { backgroundColor: Colors.HeaderButton.binBackground },
+  pencilButton: { backgroundColor: Colors.HeaderButton.pencilBackground },
+  checkButton: { backgroundColor: Colors.HeaderButton.checkBackground },
+});

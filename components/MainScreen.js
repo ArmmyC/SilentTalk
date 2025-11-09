@@ -8,17 +8,19 @@ import { Colors } from "../constants/settings.js";
 
 const createNewTextHolder = () => ({
   id: Date.now().toString(),
-  headerText: "PlaceHolder",
-  contentText: "",
-});
-const createFirstTextHolder = () => ({
-  id: Date.now().toString(),
-  headerText: "Example",
-  contentText: "Hello, my name is Rachel!",
 });
 
 export default function MainScreen() {
-  const [blocks, setBlocks] = useState([createFirstTextHolder()]);
+  const [blocks, setBlocks] = useState([createNewTextHolder()]);
+  const [selectedBlockId, setSelectedBlockId] = useState(null);
+
+  const handleSelectBlock = (id) => {
+    if (selectedBlockId !== id) {
+      setSelectedBlockId(id);
+    } else {
+      setSelectedBlockId(null);
+    }
+  };
 
   const handleAddTextHolder = () => {
     setBlocks((prevInputs) => [createNewTextHolder(), ...prevInputs]);
@@ -28,17 +30,7 @@ export default function MainScreen() {
     setBlocks((prevInputs) =>
       prevInputs.filter((block) => block.id !== idToDelete)
     );
-  };
-
-  const handleHeaderChange = (id, text) => {
-    setBlocks((prevInputs) =>
-      prevInputs.map((block) =>
-        block.id === id ? { ...block, headerText: text } : input
-      )
-    );
-  };
-  const handleContentChange = (id, text) => {
-    console.log(`Block ${id} Content changed to: ${text}`);
+    setSelectedBlockId(null);
   };
 
   return (
@@ -49,22 +41,23 @@ export default function MainScreen() {
             <TextHolder
               key={block.id}
               id={block.id}
-              headerText={block.headerText}
-              contentText={block.contentText}
-              onHeaderChange={handleHeaderChange}
-              onContentChange={handleContentChange}
               onDelete={handleDeleteTextHolder}
+              isSelected={block.id === selectedBlockId}
+              onSelect={handleSelectBlock}
             />
           ))}
         </View>
       </KeyboardAwareScrollView>
-      <Footer onAddBlock={handleAddTextHolder} />
+      <Footer
+        onAddBlock={handleAddTextHolder}
+        isSelecting={selectedBlockId !== null}
+      />
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.rootbackground,
     flex: 1,
   },
   content: {

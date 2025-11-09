@@ -17,7 +17,7 @@ export default function AddButton({ onAddBlock }) {
         <MaterialCommunityIcons
           name={"plus"}
           size={Sizes.iconSize.mainIcon}
-          color={Colors.button.addButton}
+          color={Colors.FooterButton.addButton}
         />
       </Pressable>
     </View>
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   actionButton: {
-    backgroundColor: Colors.button.background,
-    shadowColor: Colors.button.background,
+    backgroundColor: Colors.FooterButton.background,
+    shadowColor: Colors.FooterButton.background,
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",

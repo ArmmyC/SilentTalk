@@ -1,18 +1,26 @@
 import { Platform } from "react-native";
 
 export const Colors = {
-  background: "#f0f2f3ff",
-  button: {
+  rootbackground: "#f0f2f3ff",
+  FooterButton: {
     background: "#72b8ffff",
     addButton: "#ffffffff",
     ttsButton: "#ffffffff",
     forwardButton: "#ffffffff",
     backwardButton: "#ffffffff",
   },
+  HeaderButton: {
+    binBackground: "#ff0000ff",
+    binButton: "#ffffffff",
+    pencilBackground: "#78b7ffff",
+    pencilButton: "#ffffffff",
+    checkBackground: "#97f69dff",
+    checkButton: "#ffffffff",
+  },
   textHolder: {
-    headerBackgroud: "#008adaff",
+    headerBackgroud: "#f6cb67ff",
     headerText: "#272727ff",
-    contentBackground: "#e1e1e1ff",
+    contentBackground: "#eeeeeeff",
     contentText: "#181818ff",
   },
 
@@ -42,6 +50,6 @@ export const Sizes = {
   iconSize: {
     mainIcon: 36,
     sideIcon: 20,
-    blockIcon: 20,
+    blockIcon: 16,
   },
 };
