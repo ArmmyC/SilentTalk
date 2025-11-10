@@ -13,7 +13,7 @@ export default function Header({
   isSelected,
   isEditing,
   onSetEditingId,
-  stopTTS,
+  onStopTTS,
 }) {
   const [text, setText] = useState("PlaceHolder");
   const headerRef = useRef(null);
@@ -21,7 +21,7 @@ export default function Header({
   const handleEditPress = () => {
     const nextEditingState = !isEditing;
     onSetEditingId(nextEditingState ? id : null);
-    stopTTS();
+    onStopTTS();
   };
 
   useEffect(() => {

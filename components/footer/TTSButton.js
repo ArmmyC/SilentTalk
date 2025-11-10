@@ -5,35 +5,62 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import * as Speech from "expo-speech";
 
-export default function TTSButton({ ttsText, isAnyBlockEditing, setStopTTS }) {
+export default function TTSButton({
+  ttsText,
+  onSetEditingId,
+  setStopTTS,
+  onSetHighlightPosition,
+  setIsTTSSpeaking,
+}) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const stopSpeech = () => {
     Speech.stop();
     setIsPlaying(false);
+    onSetHighlightPosition(null);
+    setIsTTSSpeaking(false);
   };
 
   useEffect(() => {
-    setStopTTS(stopSpeech);
+    setStopTTS(() => stopSpeech);
   }, [setStopTTS]);
 
   useEffect(() => {
     return () => {
       Speech.stop();
+      setIsTTSSpeaking(false);
+      setIsPlaying(false);
     };
   }, []);
 
   const handlePlayPress = async () => {
     if (isPlaying) {
       stopSpeech();
+      setIsTTSSpeaking(false);
+      setIsPlaying(false);
     } else {
       if (!ttsText) {
         return;
       }
+      onSetEditingId(null);
       setIsPlaying(true);
+      onSetHighlightPosition(null);
+      setIsTTSSpeaking(true);
       Speech.speak(ttsText, {
-        onDone: () => setIsPlaying(false),
-        onError: () => setIsPlaying(false),
+        onBoundary: (data) => {
+          const endIndex = data.charIndex + data.charLength;
+          onSetHighlightPosition(endIndex);
+        },
+        onDone: () => {
+          setIsPlaying(false);
+          setIsPlaying(false);
+          onSetHighlightPosition(null);
+        },
+        onError: () => {
+          setIsPlaying(false);
+          setIsPlaying(false);
+          onSetHighlightPosition(null);
+        },
       });
     }
   };
@@ -41,7 +68,6 @@ export default function TTSButton({ ttsText, isAnyBlockEditing, setStopTTS }) {
   return (
     <View style={styles.footer}>
       <Pressable
-        disabled={isAnyBlockEditing}
         onPress={() => {}}
         style={({ pressed }) => [
           styles.actionButton,
@@ -57,7 +83,6 @@ export default function TTSButton({ ttsText, isAnyBlockEditing, setStopTTS }) {
         />
       </Pressable>
       <Pressable
-        disabled={isAnyBlockEditing}
         onPress={handlePlayPress}
         style={({ pressed }) => [
           styles.actionButton,
@@ -72,7 +97,6 @@ export default function TTSButton({ ttsText, isAnyBlockEditing, setStopTTS }) {
         />
       </Pressable>
       <Pressable
-        disabled={isAnyBlockEditing}
         onPress={() => {}}
         style={({ pressed }) => [
           styles.actionButton,

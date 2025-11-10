@@ -8,14 +8,18 @@ export default function Footer({
   onAddBlock,
   isSelecting,
   ttsText,
-  isAnyBlockEditing,
+  onSetEditingId,
   setStopTTS,
+  onSetHighlightPosition,
+  setIsTTSSpeaking,
 }) {
   const ButtonElement = isSelecting ? (
     <TTSButton
       ttsText={ttsText}
-      isAnyBlockEditing={isAnyBlockEditing}
+      onSetEditingId={onSetEditingId}
       setStopTTS={setStopTTS}
+      onSetHighlightPosition={onSetHighlightPosition}
+      setIsTTSSpeaking={setIsTTSSpeaking}
     />
   ) : (
     <AddButton onAddBlock={onAddBlock} />

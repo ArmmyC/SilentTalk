@@ -13,7 +13,9 @@ export default function TextHolder({
   onChangeContent,
   isEditing,
   onSetEditingId,
-  stopTTS,
+  onStopTTS,
+  highlightPosition,
+  isTTSSpeaking,
 }) {
   return (
     <View style={[styles.container, isSelected && styles.containerFocused]}>
@@ -28,14 +30,15 @@ export default function TextHolder({
           isSelected={isSelected}
           isEditing={isEditing}
           onSetEditingId={onSetEditingId}
-          stopTTS={stopTTS}
+          onStopTTS={onStopTTS}
         />
         <Content
           id={id}
           isSelected={isSelected}
           text={contentText}
           setText={onChangeContent}
-          stopTTS={stopTTS}
+          highlightPosition={highlightPosition}
+          isTTSSpeaking={isTTSSpeaking}
         />
       </Pressable>
     </View>
